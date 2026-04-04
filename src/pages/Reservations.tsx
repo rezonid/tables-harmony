@@ -1,12 +1,32 @@
 import { motion } from "framer-motion";
-import { Plus, Phone, Users, Calendar } from "lucide-react";
+import { Phone, Users, Calendar } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
-import { reservations, tables } from "@/lib/data";
+import { useReservations, useUpdateReservation } from "@/hooks/useRestaurant";
 import { Button } from "@/components/ui/button";
+import NewReservationDialog from "@/components/NewReservationDialog";
+import { toast } from "sonner";
 
 export default function Reservations() {
-  const today = reservations.filter((r) => r.date === "2026-04-04");
-  const upcoming = reservations.filter((r) => r.date !== "2026-04-04" && r.status !== "cancelled");
+  const { data: reservations = [], isLoading } = useReservations();
+  const updateReservation = useUpdateReservation();
+
+  const today = new Date().toISOString().split("T")[0];
+  const todayRes = reservations.filter((r: any) => r.reservation_date === today);
+  const upcoming = reservations.filter((r: any) => r.reservation_date !== today && r.status !== "cancelled");
+
+  const handleCheckIn = (id: string) => {
+    updateReservation.mutate({ id, status: "checked_in" }, {
+      onSuccess: () => toast.success("Guest checked in!"),
+    });
+  };
+
+  const handleCancel = (id: string) => {
+    updateReservation.mutate({ id, status: "cancelled" }, {
+      onSuccess: () => toast.success("Reservation cancelled"),
+    });
+  };
+
+  if (isLoading) return <div className="p-8"><p className="text-muted-foreground">Loading...</p></div>;
 
   return (
     <div className="p-8 max-w-7xl">
@@ -15,30 +35,27 @@ export default function Reservations() {
           <h1 className="text-3xl font-bold">Reservations</h1>
           <p className="text-muted-foreground mt-1">Manage guest reservations and check-ins.</p>
         </div>
-        <Button>
-          <Plus className="w-4 h-4 mr-2" /> New Reservation
-        </Button>
+        <NewReservationDialog />
       </div>
 
-      {/* Today */}
       <div className="mt-8">
         <h2 className="text-lg font-semibold font-sans mb-4 flex items-center gap-2">
           <Calendar className="w-4 h-4 text-primary" /> Today
         </h2>
         <div className="space-y-3">
-          {today.map((r, i) => (
-            <ReservationRow key={r.id} reservation={r} index={i} />
+          {todayRes.map((r: any, i: number) => (
+            <ReservationRow key={r.id} r={r} index={i} onCheckIn={handleCheckIn} onCancel={handleCancel} />
           ))}
+          {todayRes.length === 0 && <p className="text-sm text-muted-foreground">No reservations today</p>}
         </div>
       </div>
 
-      {/* Upcoming */}
       {upcoming.length > 0 && (
         <div className="mt-8">
           <h2 className="text-lg font-semibold font-sans mb-4">Upcoming</h2>
           <div className="space-y-3">
-            {upcoming.map((r, i) => (
-              <ReservationRow key={r.id} reservation={r} index={i} />
+            {upcoming.map((r: any, i: number) => (
+              <ReservationRow key={r.id} r={r} index={i} onCheckIn={handleCheckIn} onCancel={handleCancel} />
             ))}
           </div>
         </div>
@@ -47,8 +64,10 @@ export default function Reservations() {
   );
 }
 
-function ReservationRow({ reservation: r, index }: { reservation: typeof reservations[0]; index: number }) {
-  const table = tables.find((t) => t.id === r.tableId);
+function ReservationRow({ r, index, onCheckIn, onCancel }: { r: any; index: number; onCheckIn: (id: string) => void; onCancel: (id: string) => void }) {
+  // Map DB enum to display status
+  const displayStatus = r.status === "checked_in" ? "checked-in" : r.status;
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -12 }}
@@ -61,25 +80,25 @@ function ReservationRow({ reservation: r, index }: { reservation: typeof reserva
           <Users className="w-5 h-5 text-primary" />
         </div>
         <div>
-          <p className="font-medium">{r.customerName}</p>
+          <p className="font-medium">{r.customer_name}</p>
           <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
-            <span className="flex items-center gap-1"><Phone className="w-3 h-3" />{r.phone}</span>
-            <span>Party of {r.partySize}</span>
-            <span>Table {table?.number}</span>
+            {r.phone && <span className="flex items-center gap-1"><Phone className="w-3 h-3" />{r.phone}</span>}
+            <span>Party of {r.party_size}</span>
+            <span>Table {r.restaurant_tables?.table_number}</span>
           </div>
         </div>
       </div>
       <div className="flex items-center gap-4">
         <div className="text-right">
-          <p className="text-sm font-medium">{r.time}</p>
-          <p className="text-xs text-muted-foreground">{r.date}</p>
+          <p className="text-sm font-medium">{r.reservation_time?.slice(0, 5)}</p>
+          <p className="text-xs text-muted-foreground">{r.reservation_date}</p>
         </div>
-        <StatusBadge status={r.status} />
+        <StatusBadge status={displayStatus} />
         {r.status === "confirmed" && (
-          <Button size="sm" variant="outline">Check In</Button>
-        )}
-        {r.status === "confirmed" && (
-          <Button size="sm" variant="ghost" className="text-destructive">Cancel</Button>
+          <>
+            <Button size="sm" variant="outline" onClick={() => onCheckIn(r.id)}>Check In</Button>
+            <Button size="sm" variant="ghost" className="text-destructive" onClick={() => onCancel(r.id)}>Cancel</Button>
+          </>
         )}
       </div>
     </motion.div>
