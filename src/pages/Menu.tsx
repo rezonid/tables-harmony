@@ -1,11 +1,15 @@
 import { motion } from "framer-motion";
-import { Plus, Pencil, ToggleLeft, ToggleRight } from "lucide-react";
-import { menuItems } from "@/lib/data";
+import { Pencil, ToggleLeft, ToggleRight } from "lucide-react";
+import { useMenuItems } from "@/hooks/useRestaurant";
 import { Button } from "@/components/ui/button";
-
-const categories = [...new Set(menuItems.map((m) => m.category))];
+import NewMenuItemDialog from "@/components/NewMenuItemDialog";
 
 export default function Menu() {
+  const { data: menuItems = [], isLoading } = useMenuItems();
+  const categories = [...new Set(menuItems.map((m) => m.category))];
+
+  if (isLoading) return <div className="p-8"><p className="text-muted-foreground">Loading...</p></div>;
+
   return (
     <div className="p-8 max-w-7xl">
       <div className="flex items-center justify-between">
@@ -13,9 +17,7 @@ export default function Menu() {
           <h1 className="text-3xl font-bold">Menu</h1>
           <p className="text-muted-foreground mt-1">Manage your restaurant's menu items.</p>
         </div>
-        <Button>
-          <Plus className="w-4 h-4 mr-2" /> Add Item
-        </Button>
+        <NewMenuItemDialog />
       </div>
 
       {categories.map((category) => (
@@ -37,7 +39,7 @@ export default function Menu() {
                       <p className="font-medium">{item.name}</p>
                       <p className="text-xs text-muted-foreground mt-1">{item.description}</p>
                     </div>
-                    <p className="text-lg font-bold font-sans text-primary">${item.price}</p>
+                    <p className="text-lg font-bold font-sans text-primary">${Number(item.price).toFixed(2)}</p>
                   </div>
                   <div className="flex items-center justify-between mt-3 pt-3 border-t">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
