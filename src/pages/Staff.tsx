@@ -1,8 +1,5 @@
 import { motion } from "framer-motion";
-import { Plus, Mail } from "lucide-react";
-import { staff } from "@/lib/data";
-import { Button } from "@/components/ui/button";
-import StatusBadge from "@/components/StatusBadge";
+import { Mail } from "lucide-react";
 
 const roleColors: Record<string, string> = {
   chef: "bg-primary/10 text-primary",
@@ -11,17 +8,21 @@ const roleColors: Record<string, string> = {
   manager: "bg-destructive/15 text-destructive",
 };
 
+const staff = [
+  { id: "s1", name: "Marco Rossi", role: "chef", email: "marco@dinedesk.com", branch: "Main Branch" },
+  { id: "s2", name: "Ana López", role: "waiter", email: "ana@dinedesk.com", branch: "Main Branch" },
+  { id: "s3", name: "Tom Baker", role: "waiter", email: "tom@dinedesk.com", branch: "Main Branch" },
+  { id: "s4", name: "Lisa Park", role: "receptionist", email: "lisa@dinedesk.com", branch: "Main Branch" },
+  { id: "s5", name: "David Kim", role: "manager", email: "david@dinedesk.com", branch: "Main Branch" },
+  { id: "s6", name: "Sophie Chen", role: "chef", email: "sophie@dinedesk.com", branch: "West Side" },
+];
+
 export default function Staff() {
   return (
     <div className="p-8 max-w-7xl">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Staff</h1>
-          <p className="text-muted-foreground mt-1">Manage employees across branches.</p>
-        </div>
-        <Button>
-          <Plus className="w-4 h-4 mr-2" /> Add Employee
-        </Button>
+      <div>
+        <h1 className="text-3xl font-bold">Staff</h1>
+        <p className="text-muted-foreground mt-1">Manage employees across branches.</p>
       </div>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
