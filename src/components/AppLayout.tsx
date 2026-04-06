@@ -26,11 +26,11 @@ export default function AppLayout() {
       <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col shrink-0">
         <div className="p-6 flex items-center gap-3 border-b border-sidebar-border">
           <div className="w-10 h-10 rounded-lg bg-sidebar-primary flex items-center justify-center">
-            <ChefHat className="w-5 h-5 text-sidebar-primary-foreground" />
+            <Building2 className="w-5 h-5 text-sidebar-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-base font-semibold font-sans tracking-normal">Dine Desk</h1>
-            <p className="text-xs text-sidebar-muted">Restaurant Manager</p>
+<h1 className="text-base font-semibold font-sans tracking-normal">Noir et Or</h1>
+            <p className="text-xs text-sidebar-muted">Fine Dining Experience</p>
           </div>
         </div>
 
@@ -60,8 +60,8 @@ export default function AppLayout() {
               <Building2 className="w-4 h-4 text-sidebar-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium">Main Branch</p>
-              <p className="text-xs text-sidebar-muted">Downtown</p>
+<p className="text-sm font-medium">Noir et Or Main</p>
+              <p className="text-xs text-sidebar-muted">Nairobi CBD</p>
             </div>
           </div>
         </div>

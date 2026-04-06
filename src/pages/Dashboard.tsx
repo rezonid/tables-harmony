@@ -26,7 +26,7 @@ export default function Dashboard() {
         <StatCard title="Available Tables" value={availableTables} subtitle={`of ${tables.length} total`} icon={UtensilsCrossed} />
         <StatCard title="Today's Reservations" value={todayReservations} icon={CalendarCheck} />
         <StatCard title="Active Orders" value={activeOrders} icon={ClipboardList} />
-        <StatCard title="Total Revenue" value={`$${totalRevenue.toFixed(2)}`} icon={DollarSign} />
+        <StatCard title="Total Revenue" value={`KES ${Math.round(totalRevenue)}`} icon={DollarSign} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
@@ -75,7 +75,7 @@ export default function Dashboard() {
                   <p className="text-xs text-muted-foreground">{o.order_items?.length ?? 0} items · {o.waiter_name}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <p className="text-sm font-semibold">${Number(o.total).toFixed(2)}</p>
+                  <p className="text-sm font-semibold">KES {Math.round(Number(o.total))}</p>
                   <StatusBadge status={o.status} />
                 </div>
               </div>

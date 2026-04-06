@@ -1,4 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { menuItems } from "@/data/menuItems";
+import { restaurantTables } from "@/data/tables";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -14,9 +16,9 @@ export function useTables() {
   return useQuery({
     queryKey: ["restaurant_tables"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("restaurant_tables").select("*").order("table_number");
+      const { data, error } = await supabase.from("restaurant_tables").select("*");
       if (error) throw error;
-      return data as RestaurantTable[];
+      return data;
     },
   });
 }
@@ -66,11 +68,7 @@ export function useUpdateReservation() {
 export function useMenuItems() {
   return useQuery({
     queryKey: ["menu_items"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("menu_items").select("*").order("category").order("name");
-      if (error) throw error;
-      return data as MenuItem[];
-    },
+    queryFn: () => menuItems as MenuItem[],
   });
 }
 

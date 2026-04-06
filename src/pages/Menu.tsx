@@ -39,7 +39,7 @@ export default function Menu() {
                       <p className="font-medium">{item.name}</p>
                       <p className="text-xs text-muted-foreground mt-1">{item.description}</p>
                     </div>
-                    <p className="text-lg font-bold font-sans text-primary">${Number(item.price).toFixed(2)}</p>
+                    <p className="text-lg font-bold font-sans text-primary">KES {Math.round(Number(item.price))}</p>
                   </div>
                   <div className="flex items-center justify-between mt-3 pt-3 border-t">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">

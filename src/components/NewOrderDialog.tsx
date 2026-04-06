@@ -112,7 +112,7 @@ export default function NewOrderDialog() {
                   </SelectTrigger>
                   <SelectContent>
                     {availableMenuItems.map((m) => (
-                      <SelectItem key={m.id} value={m.id}>{m.name} — ${Number(m.price).toFixed(2)}</SelectItem>
+                      <SelectItem key={m.id} value={m.id}>{m.name} — KES {Math.round(Number(m.price))}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -150,7 +150,7 @@ export default function NewOrderDialog() {
           </div>
 
           <div className="flex items-center justify-between pt-2 border-t">
-            <p className="text-sm font-medium">Total: <span className="text-lg font-bold">${total.toFixed(2)}</span></p>
+            <p className="text-sm font-medium">Total: <span className="text-lg font-bold">KES {Math.round(total)}</span></p>
             <Button onClick={handleSubmit} disabled={createOrder.isPending}>
               {createOrder.isPending ? "Placing..." : "Place Order"}
             </Button>

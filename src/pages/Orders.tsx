@@ -56,7 +56,7 @@ export default function Orders() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <p className="text-lg font-bold font-sans">${Number(order.total).toFixed(2)}</p>
+                <p className="text-lg font-bold font-sans">KES {Math.round(Number(order.total))}</p>
                 <StatusBadge status={order.status} />
                 {order.status !== "paid" && (
                   <Button size="sm" variant="outline" onClick={() => advance(order.id, order.status)}>
@@ -74,7 +74,7 @@ export default function Orders() {
                       <p className="text-sm font-medium">{item.item_name}</p>
                       <p className="text-xs text-muted-foreground">Seat {item.seat_number} · Qty {item.quantity}</p>
                     </div>
-                    <p className="text-sm font-medium">${(Number(item.price) * item.quantity).toFixed(2)}</p>
+                    <p className="text-sm font-medium">KES {Math.round((Number(item.price) * item.quantity))}</p>
                   </div>
                 ))}
               </div>

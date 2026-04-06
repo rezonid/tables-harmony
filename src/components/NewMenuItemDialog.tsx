@@ -58,7 +58,7 @@ export default function NewMenuItemDialog() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="price">Price ($)</Label>
+              <Label htmlFor="price">Price (KES)</Label>
               <Input id="price" name="price" type="number" step="0.01" min="0" required />
             </div>
             <div className="space-y-2">
